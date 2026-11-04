@@ -1,0 +1,40 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { AUTHOR, GITHUB, SITE_TITLE } from '../consts';
+---
+
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<BaseHead title={`关于 · ${SITE_TITLE}`} description={`关于 ${AUTHOR} 和这个博客`} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<div class="prose">
+				<h2>你好，我是 {AUTHOR}</h2>
+				<p>
+					后端工程师，平时写代码、读点书、记录一些想法。
+					这个博客用来放两类东西：<strong>技术笔记</strong>和<strong>生活随笔</strong>。
+				</p>
+				<p>
+					我相信「写下来，才算真正想清楚」。很多问题在脑子里的时候是糊的，
+					落到纸面上就不得不变成清楚的句子。所以这里首先写给自己，如果能顺便对你有点用，那就更好了。
+				</p>
+				<h2>关于这个站</h2>
+				<p>
+					用 <a href="https://astro.build" target="_blank" rel="noopener">Astro</a> 搭建，
+					托管在 GitHub Pages 上，源码在
+					<a href={GITHUB} target="_blank" rel="noopener">GitHub</a>。
+					支持 <a href="/rss.xml">RSS 订阅</a>。
+				</p>
+				<blockquote>
+					<p>（这是占位的自我介绍，记得改成你自己的。编辑 src/pages/about.astro）</p>
+				</blockquote>
+			</div>
+		</main>
+		<Footer />
+	</body>
+</html>

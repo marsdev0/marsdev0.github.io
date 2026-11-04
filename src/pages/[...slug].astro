@@ -1,0 +1,21 @@
+---
+import { getCollection, render } from 'astro:content';
+import BlogPost from '../layouts/BlogPost.astro';
+import { postUrl, sortPosts } from '../utils';
+
+export async function getStaticPaths() {
+	const posts = sortPosts(await getCollection('blog'));
+	return posts.map((post, i) => ({
+		// URL 形如 2026/11/04/my-post
+		params: { slug: postUrl(post).replace(/^\//, '').replace(/\/$/, '') },
+		props: { post, prev: posts[i + 1], next: posts[i - 1] },
+	}));
+}
+
+const { post, prev, next } = Astro.props;
+const { Content } = await render(post);
+---
+
+<BlogPost post={post} prev={prev} next={next}>
+	<Content />
+</BlogPost>

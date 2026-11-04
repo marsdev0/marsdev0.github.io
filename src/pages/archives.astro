@@ -1,0 +1,88 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE } from '../consts';
+import { formatDate, postUrl, sortPosts } from '../utils';
+
+const posts = sortPosts(await getCollection('blog'));
+
+const byYear = new Map<number, typeof posts>();
+for (const post of posts) {
+	const year = post.data.pubDate.getUTCFullYear();
+	if (!byYear.has(year)) byYear.set(year, []);
+	byYear.get(year)!.push(post);
+}
+const years = [...byYear.keys()].sort((a, b) => b - a);
+---
+
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<BaseHead title={`归档 · ${SITE_TITLE}`} description={`${SITE_TITLE} 的全部文章归档`} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<h1 class="page-title">归档 <span class="count">{posts.length} 篇</span></h1>
+			{
+				years.map((year) => (
+					<section class="year">
+						<h2>{year}</h2>
+						<ul>
+							{byYear.get(year)!.map((post) => (
+								<li>
+									<time>{formatDate(post.data.pubDate)}</time>
+									<a href={postUrl(post)}>{post.data.title}</a>
+								</li>
+							))}
+						</ul>
+					</section>
+				))
+			}
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.page-title {
+		font-size: 1.4em;
+	}
+	.count {
+		color: var(--muted);
+		font-size: 0.7em;
+		font-weight: 400;
+	}
+	.year h2 {
+		font-size: 1.15em;
+		color: var(--muted);
+		font-weight: 400;
+		margin-top: 2.2em;
+	}
+	.year ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+	.year li {
+		display: flex;
+		gap: 1.2em;
+		align-items: baseline;
+		padding: 0.45em 0;
+		border-bottom: 1px dashed var(--border);
+	}
+	.year time {
+		color: var(--muted);
+		font-size: 0.82rem;
+		font-family: var(--font-mono);
+		flex-shrink: 0;
+	}
+	.year a {
+		color: var(--text);
+	}
+	.year a:hover {
+		color: var(--accent);
+	}
+</style>

@@ -1,0 +1,79 @@
+---
+import { getCollection } from 'astro:content';
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { formatDate, postUrl, sortPosts } from '../utils';
+
+const posts = sortPosts(await getCollection('blog'));
+const recent = posts.slice(0, 8);
+---
+
+<!doctype html>
+<html lang="zh-CN">
+	<head>
+		<BaseHead title={`${SITE_TITLE} · blog`} description={SITE_DESCRIPTION} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="post-list">
+				{
+					recent.map((post) => (
+						<a class="row" href={postUrl(post)}>
+							<span class="date">{formatDate(post.data.pubDate)}</span>
+							<span class="t">{post.data.title}</span>
+							{post.data.description && <span class="desc">{post.data.description}</span>}
+						</a>
+					))
+				}
+			</section>
+			{
+				posts.length > recent.length && (
+					<p class="more">
+						<a href="/archives/">全部文章（{posts.length} 篇）→</a>
+					</p>
+				)
+			}
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.post-list {
+		margin-top: 1rem;
+	}
+	.row {
+		display: block;
+		padding: 1.05em 0;
+		border-bottom: 1px solid var(--border);
+	}
+	.row .date {
+		color: var(--muted);
+		font-size: 0.82rem;
+		font-family: var(--font-mono);
+	}
+	.row .t {
+		display: block;
+		font-size: 1.12rem;
+		font-weight: 700;
+		color: var(--text);
+		margin-top: 0.15em;
+	}
+	.row:hover .t {
+		color: var(--accent);
+	}
+	.row .desc {
+		display: block;
+		color: var(--muted);
+		font-size: 0.9rem;
+		margin-top: 0.2em;
+	}
+	.more {
+		text-align: center;
+		margin-top: 2rem;
+		font-size: 0.9rem;
+	}
+</style>

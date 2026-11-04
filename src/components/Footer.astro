@@ -1,0 +1,40 @@
+---
+import { AUTHOR, GITHUB } from '../consts';
+
+const year = new Date().getFullYear();
+---
+
+<footer>
+	<p>
+		© {year} {AUTHOR} ·
+		<a href="/rss.xml">RSS</a> ·
+		<a href={GITHUB} target="_blank" rel="noopener">GitHub</a> ·
+		<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a>
+	</p>
+	<p class="powered">
+		由 <a href="https://astro.build" target="_blank" rel="noopener">Astro</a> 驱动
+	</p>
+</footer>
+
+<style>
+	footer {
+		max-width: 720px;
+		margin: 3rem auto 0;
+		padding: 1.6rem 1.25rem 2.6rem;
+		text-align: center;
+		color: var(--muted);
+		font-size: 0.85rem;
+		border-top: 1px solid var(--border);
+	}
+	footer p {
+		margin: 0.4em 0;
+	}
+	footer a {
+		color: var(--muted);
+		border-bottom: 1px dashed var(--border);
+	}
+	footer a:hover {
+		color: var(--accent);
+		border-bottom-color: var(--accent);
+	}
+</style>

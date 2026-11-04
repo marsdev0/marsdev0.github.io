@@ -1,0 +1,208 @@
+/*
+	字体：Lato（拉丁）+ Noto Serif SC（中文）+ JetBrains Mono（代码），全部自托管。
+	配色：暖纸色 + 墨色文字 + 一点朱砂红作为强调色，支持深浅两套主题。
+*/
+
+@import '@fontsource/lato/400.css';
+@import '@fontsource/lato/400-italic.css';
+@import '@fontsource/lato/700.css';
+@import '@fontsource/noto-serif-sc/400.css';
+@import '@fontsource/noto-serif-sc/700.css';
+@import '@fontsource/jetbrains-mono/400.css';
+
+:root {
+	--bg: #faf9f6;
+	--text: #35322d;
+	--muted: #918a80;
+	--accent: #b0524a;
+	--accent-hover: #8f3f38;
+	--border: #e8e4dc;
+	--code-bg: #f0ede6;
+	--pre-bg: #2b2926;
+	--pre-text: #e8e4dc;
+	--font-body: 'Lato', 'Noto Serif SC', 'Songti SC', serif;
+	--font-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+}
+
+[data-theme='dark'] {
+	--bg: #1c1b19;
+	--text: #d7d3ca;
+	--muted: #8f8981;
+	--accent: #d08a80;
+	--accent-hover: #e3a89f;
+	--border: #383531;
+	--code-bg: #2a2825;
+	--pre-bg: #242220;
+	--pre-text: #ddd9d0;
+}
+
+html {
+	background: var(--bg);
+}
+
+body {
+	font-family: var(--font-body);
+	color: var(--text);
+	background: var(--bg);
+	margin: 0;
+	font-size: 17px;
+	line-height: 1.8;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+	-webkit-font-smoothing: antialiased;
+	transition: background-color 0.2s ease;
+}
+
+main {
+	max-width: 720px;
+	margin: 0 auto;
+	padding: 2.5rem 1.25rem 3rem;
+}
+
+a {
+	color: var(--accent);
+	text-decoration: none;
+}
+a:hover {
+	color: var(--accent-hover);
+}
+
+::selection {
+	background: var(--accent);
+	color: var(--bg);
+}
+
+h1,
+h2,
+h3,
+h4 {
+	line-height: 1.35;
+	color: var(--text);
+	margin: 0 0 0.5em;
+}
+h1 {
+	font-size: 1.9em;
+}
+h2 {
+	font-size: 1.45em;
+	margin-top: 2em;
+}
+h3 {
+	font-size: 1.2em;
+	margin-top: 1.8em;
+}
+h4 {
+	font-size: 1.05em;
+	margin-top: 1.5em;
+}
+
+p {
+	margin: 0 0 1.2em;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+	border-radius: 6px;
+}
+
+hr {
+	border: none;
+	border-top: 1px solid var(--border);
+	margin: 2.5em 0;
+}
+
+blockquote {
+	margin: 1.5em 0;
+	padding: 0.1em 1.2em;
+	border-left: 3px solid var(--accent);
+	color: var(--muted);
+	background: color-mix(in srgb, var(--code-bg) 55%, transparent);
+	border-radius: 0 6px 6px 0;
+}
+blockquote p {
+	margin: 0.8em 0;
+}
+
+code {
+	font-family: var(--font-mono);
+	font-size: 0.86em;
+	background: var(--code-bg);
+	padding: 0.15em 0.4em;
+	border-radius: 4px;
+}
+
+pre {
+	background: var(--pre-bg);
+	color: var(--pre-text);
+	padding: 1.1em 1.3em;
+	border-radius: 8px;
+	overflow-x: auto;
+	line-height: 1.6;
+	margin: 1.5em 0;
+}
+pre code {
+	all: unset;
+	font-family: var(--font-mono);
+	font-size: 0.86em;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	margin: 1.5em 0;
+	font-size: 0.95em;
+}
+th,
+td {
+	border: 1px solid var(--border);
+	padding: 0.45em 0.8em;
+	text-align: left;
+}
+th {
+	background: var(--code-bg);
+}
+
+ul,
+ol {
+	padding-left: 1.4em;
+}
+li {
+	margin: 0.3em 0;
+}
+
+/* 主题切换按钮：浅色显示月亮，深色显示太阳 */
+#theme-toggle {
+	background: none;
+	border: none;
+	cursor: pointer;
+	color: var(--muted);
+	padding: 0;
+	display: inline-flex;
+	align-items: center;
+}
+#theme-toggle:hover {
+	color: var(--accent);
+}
+#theme-toggle .sun {
+	display: none;
+}
+[data-theme='dark'] #theme-toggle .sun {
+	display: inline;
+}
+[data-theme='dark'] #theme-toggle .moon {
+	display: none;
+}
+
+.sr-only {
+	border: 0;
+	padding: 0;
+	margin: 0;
+	position: absolute !important;
+	height: 1px;
+	width: 1px;
+	overflow: hidden;
+	clip: rect(1px, 1px, 1px, 1px);
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
