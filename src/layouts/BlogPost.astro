@@ -57,6 +57,53 @@ const { title, description, pubDate, updatedDate, tags, heroImage } = post.data;
 			</article>
 		</main>
 		<Footer />
+
+		<!-- 正文图片：点击放大查看（对整图式设计图很有用） -->
+		<script>
+			// 从 srcset 里取最大的一份，放大后才清晰
+			function largestSrc(img: HTMLImageElement): string {
+				let best = img.currentSrc || img.src;
+				let bestW = 0;
+				for (const part of (img.getAttribute('srcset') || '').split(',')) {
+					const [url, desc] = part.trim().split(/\s+/);
+					if (!url) continue;
+					const w = desc && desc.endsWith('w') ? parseInt(desc, 10) : 0;
+					if (w >= bestW) {
+						bestW = w;
+						best = new URL(url, location.href).href;
+					}
+				}
+				return best;
+			}
+
+			function openLightbox(img: HTMLImageElement) {
+				const overlay = document.createElement('div');
+				overlay.className = 'lightbox';
+				const big = document.createElement('img');
+				big.src = largestSrc(img);
+				big.alt = img.alt;
+				overlay.appendChild(big);
+				document.body.appendChild(overlay);
+				document.body.style.overflow = 'hidden';
+
+				const close = () => {
+					overlay.remove();
+				document.body.style.overflow = '';
+				document.removeEventListener('keydown', onKey);
+				};
+				const onKey = (e: KeyboardEvent) => {
+					if (e.key === 'Escape') close();
+				};
+				overlay.addEventListener('click', close);
+				document.addEventListener('keydown', onKey);
+			}
+
+			document.addEventListener('click', (e) => {
+				const target = e.target as HTMLElement | null;
+				const img = target?.closest?.('.prose img') as HTMLImageElement | null;
+				if (img) openLightbox(img);
+			});
+		</script>
 	</body>
 </html>
 
@@ -113,5 +160,28 @@ const { title, description, pubDate, updatedDate, tags, heroImage } = post.data;
 	}
 	.post-nav a:hover {
 		color: var(--accent);
+	}
+</style>
+
+<style is:global>
+	/* 灯箱：运行时由 JS 创建、图片来自 markdown，必须用全局样式 */
+	.prose img {
+		cursor: zoom-in;
+	}
+	.lightbox {
+		position: fixed;
+		inset: 0;
+		z-index: 999;
+		background: rgba(16, 15, 13, 0.9);
+		overflow: auto;
+		display: flex;
+		padding: 2rem;
+		cursor: zoom-out;
+	}
+	.lightbox img {
+		margin: auto; /* 小图居中，大图可滚动浏览 */
+		max-width: none;
+		border-radius: 4px;
+		box-shadow: 0 10px 50px rgba(0, 0, 0, 0.55);
 	}
 </style>

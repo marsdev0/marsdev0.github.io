@@ -14,6 +14,8 @@ const blog = defineCollection({
 			updatedDate: z.coerce.date().optional(),
 			tags: z.array(z.string()).default([]),
 			heroImage: z.optional(image()),
+			// 首页列表缩略图（不影响文章页）
+			thumb: z.optional(image()),
 		}),
 });
 

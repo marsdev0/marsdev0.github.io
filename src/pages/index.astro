@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
@@ -22,9 +23,14 @@ const recent = posts.slice(0, 8);
 				{
 					recent.map((post) => (
 						<a class="row" href={postUrl(post)}>
-							<span class="date">{formatDate(post.data.pubDate)}</span>
-							<span class="t">{post.data.title}</span>
-							{post.data.description && <span class="desc">{post.data.description}</span>}
+							<div class="row-main">
+								<span class="date">{formatDate(post.data.pubDate)}</span>
+								<span class="t">{post.data.title}</span>
+								{post.data.description && <span class="desc">{post.data.description}</span>}
+							</div>
+							{post.data.thumb && (
+								<Image src={post.data.thumb} alt="" width={96} height={96} class="thumb" />
+							)}
 						</a>
 					))
 				}
@@ -46,9 +52,15 @@ const recent = posts.slice(0, 8);
 		margin-top: 1rem;
 	}
 	.row {
-		display: block;
+		display: flex;
+		align-items: center;
+		gap: 1.1rem;
 		padding: 1.05em 0;
 		border-bottom: 1px solid var(--border);
+	}
+	.row-main {
+		flex: 1;
+		min-width: 0;
 	}
 	.row .date {
 		color: var(--muted);
@@ -70,6 +82,21 @@ const recent = posts.slice(0, 8);
 		color: var(--muted);
 		font-size: 0.9rem;
 		margin-top: 0.2em;
+	}
+	.row .thumb {
+		flex: none;
+		width: 88px;
+		height: 88px;
+		object-fit: contain;
+		background: #fff;
+		border: 1px solid var(--border);
+		border-radius: 8px;
+		padding: 4px;
+		box-sizing: border-box;
+		transition: border-color 0.15s ease;
+	}
+	.row:hover .thumb {
+		border-color: var(--accent);
 	}
 	.more {
 		text-align: center;
