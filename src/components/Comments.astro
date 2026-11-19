@@ -1,0 +1,56 @@
+---
+// Giscus 评论组件：评论数据存在仓库的 GitHub Discussions 里
+---
+
+<section class="comments">
+	<div id="giscus-mount"></div>
+</section>
+
+<script>
+	// 当前站点主题 → giscus 主题名
+	const giscusTheme = () =>
+		document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light';
+
+	// 动态插入 giscus 客户端脚本，初始主题与站点当前主题一致
+	const s = document.createElement('script');
+	const config = {
+		'data-repo': 'marsdev0/marsdev0.github.io',
+		'data-repo-id': 'R_kgDOVi5oYg',
+		'data-category': 'Announcements',
+		'data-category-id': 'DIC_kwDOVi5oYs4DLgk3',
+		'data-mapping': 'pathname', // 按路径关联讨论，URL 变了才算新文章
+		'data-strict': '0',
+		'data-reactions-enabled': '1',
+		'data-emit-metadata': '0',
+		'data-input-position': 'top',
+		'data-lang': 'zh-CN',
+		'data-loading': 'lazy', // 滚动到可视区才加载
+		'data-theme': giscusTheme(),
+	};
+	for (const [k, v] of Object.entries(config)) s.setAttribute(k, String(v));
+	s.src = 'https://giscus.app/client.js';
+	s.crossOrigin = 'anonymous';
+	s.async = true;
+	document.querySelector('#giscus-mount')!.appendChild(s);
+
+	// 站点切换深浅色时（Header 改 <html data-theme>），同步给评论框
+	new MutationObserver(() => {
+		document
+			.querySelector<HTMLIFrameElement>('iframe.giscus-frame')
+			?.contentWindow?.postMessage(
+				{ giscus: { setConfig: { theme: giscusTheme() } } },
+				'https://giscus.app',
+			);
+	}).observe(document.documentElement, {
+		attributes: true,
+		attributeFilter: ['data-theme'],
+	});
+</script>
+
+<style>
+	.comments {
+		margin-top: 3rem;
+		padding-top: 1.2rem;
+		border-top: 1px solid var(--border);
+	}
+</style>
