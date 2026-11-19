@@ -30,6 +30,10 @@ const { title, description, pubDate, updatedDate, tags, heroImage } = post.data;
 					<h1>{title}</h1>
 					<div class="meta">
 						<FormattedDate date={pubDate} />
+						{/* 阅读次数：由不蒜子脚本填充，加载完成前隐藏 */}
+						<span id="busuanzi_container_page_pv" style="display:none">
+							阅读 <span id="busuanzi_value_page_pv"></span> 次
+						</span>
 						{
 							tags.length > 0 && (
 								<span class="tags">
@@ -57,6 +61,9 @@ const { title, description, pubDate, updatedDate, tags, heroImage } = post.data;
 			</article>
 		</main>
 		<Footer />
+
+		<!-- 不蒜子阅读计数：只需在文章页加载 -->
+		<script is:inline async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 
 		<!-- 正文图片：点击放大查看（对整图式设计图很有用） -->
 		<script>
